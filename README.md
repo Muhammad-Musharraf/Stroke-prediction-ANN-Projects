@@ -108,11 +108,11 @@ jupyter notebook
 
 ## 📊 Key Highlights
 
-✔️ End-to-end machine learning pipeline
-✔️ ANN-based classification model
-✔️ Handling imbalanced medical dataset
-✔️ Focus on real-world healthcare prediction problem
-✔️ Model evaluation with multiple metrics
+* ✔️ End-to-end machine learning pipeline
+* ✔️ ANN-based classification model
+* ✔️ Handling imbalanced medical dataset
+* ✔️ Focus on real-world healthcare prediction problem
+* ✔️ Model evaluation with multiple metrics
 
 ---
 
