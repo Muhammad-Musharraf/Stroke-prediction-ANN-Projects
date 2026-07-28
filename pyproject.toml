@@ -11,4 +11,5 @@ dependencies = [
     "pandas",
     "numpy",
     "joblib",
+    "tensorflow==2.20.0",
 ]                                                                                                                                                                                                                                                                                                                                      
