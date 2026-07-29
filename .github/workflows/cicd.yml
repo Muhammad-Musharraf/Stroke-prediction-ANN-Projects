@@ -9,11 +9,6 @@ on:
     branches:
       - main
 
-env:
-  FASTAPI_IMAGE: ${{ secrets.DOCKER_USERNAME }}/stroke-fastapi
-  STREAMLIT_IMAGE: ${{ secrets.DOCKER_USERNAME }}/stroke-streamlit
-  DOCKER_TAG: ${{ github.sha }}
-
 jobs:
   # ─────────────────────────────────────────
   # JOB 1: Lint & Basic Check
@@ -78,6 +73,19 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - name: ✅ Verify Docker Secrets
+        run: |
+          if [ -z "${{ secrets.DOCKER_USERNAME }}" ]; then
+            echo "❌ ERROR: DOCKER_USERNAME secret is not set!"
+            echo "Go to: Repo → Settings → Secrets → Actions → New secret"
+            exit 1
+          fi
+          if [ -z "${{ secrets.DOCKER_PASSWORD }}" ]; then
+            echo "❌ ERROR: DOCKER_PASSWORD secret is not set!"
+            exit 1
+          fi
+          echo "✅ Docker secrets verified: ${{ secrets.DOCKER_USERNAME }}"
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3.10.0
 
@@ -94,8 +102,8 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            ${{ env.FASTAPI_IMAGE }}:latest
-            ${{ env.FASTAPI_IMAGE }}:${{ env.DOCKER_TAG }}
+            ${{ secrets.DOCKER_USERNAME }}/stroke-fastapi:latest
+            ${{ secrets.DOCKER_USERNAME }}/stroke-fastapi:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -110,6 +118,14 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+
+      - name: ✅ Verify Docker Secrets
+        run: |
+          if [ -z "${{ secrets.DOCKER_USERNAME }}" ]; then
+            echo "❌ ERROR: DOCKER_USERNAME secret is not set!"
+            exit 1
+          fi
+          echo "✅ Docker secrets verified: ${{ secrets.DOCKER_USERNAME }}"
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3.10.0
@@ -127,7 +143,7 @@ jobs:
           file: ./Ui/Dockerfile
           push: true
           tags: |
-            ${{ env.STREAMLIT_IMAGE }}:latest
-            ${{ env.STREAMLIT_IMAGE }}:${{ env.DOCKER_TAG }}
+            ${{ secrets.DOCKER_USERNAME }}/stroke-streamlit:latest
+            ${{ secrets.DOCKER_USERNAME }}/stroke-streamlit:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
