@@ -7,7 +7,7 @@ requires-python = ">=3.12"
 dependencies = [
     "fastapi",
     "uvicorn",
-    "scikit-learn",
+    "scikit-learn==1.6.1",
     "pandas",
     "numpy",
     "joblib",
@@ -16,6 +16,7 @@ dependencies = [
     "streamlit>=1.60.0",
     "sentry-sdk>=2.66.1",
     "dotenv>=0.9.9",
+    "keras==3.13.2",
 ]       
 [tool.flake8]
 max-line-length = 120
