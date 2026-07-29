@@ -12,4 +12,8 @@ dependencies = [
     "numpy",
     "joblib",
     "tensorflow==2.20.0",
+    "plotly>=6.9.0",
+    "streamlit>=1.60.0",
+    "sentry-sdk>=2.66.1",
+    "dotenv>=0.9.9",
 ]                                                                                                                                                                                                                                                                                                                                      

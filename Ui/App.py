@@ -16,7 +16,7 @@ st.set_page_config(
 # ─────────────────────────────────────────────────────────
 #  FIXED API SETTING (sidebar removed — edit here if needed)
 # ─────────────────────────────────────────────────────────
-API_URL = "http://localhost:8000"
+API_URL = "http://host.docker.internal:8000"
 
 # ─────────────────────────────────────────────────────────
 #  STYLES — clean, bright, high-contrast theme
