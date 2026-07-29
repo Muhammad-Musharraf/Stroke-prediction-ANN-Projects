@@ -63,6 +63,7 @@ jobs:
 
   # ─────────────────────────────────────────
   # JOB 2: Build & Push FastAPI Image
+  # FastApi/main.py  |  Dockerfile (root)
   # ─────────────────────────────────────────
   build-fastapi:
     name: Build FastAPI Docker Image
@@ -73,11 +74,11 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: ✅ Verify Docker Secrets
+      - name: Verify Docker Secrets
         run: |
           if [ -z "${{ secrets.DOCKER_USERNAME }}" ]; then
             echo "❌ ERROR: DOCKER_USERNAME secret is not set!"
-            echo "Go to: Repo → Settings → Secrets → Actions → New secret"
+            echo "Go to: Repo → Settings → Secrets → Actions → New repository secret"
             exit 1
           fi
           if [ -z "${{ secrets.DOCKER_PASSWORD }}" ]; then
@@ -102,13 +103,14 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            ${{ secrets.DOCKER_USERNAME }}/stroke-fastapi:latest
-            ${{ secrets.DOCKER_USERNAME }}/stroke-fastapi:${{ github.sha }}
+            ${{ secrets.DOCKER_USERNAME != '' && secrets.DOCKER_USERNAME || github.repository_owner }}/stroke-fastapi:latest
+            ${{ secrets.DOCKER_USERNAME != '' && secrets.DOCKER_USERNAME || github.repository_owner }}/stroke-fastapi:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
   # ─────────────────────────────────────────
   # JOB 3: Build & Push Streamlit Image
+  # Ui/App.py  |  Ui/Dockerfile
   # ─────────────────────────────────────────
   build-streamlit:
     name: Build Streamlit Docker Image
@@ -119,10 +121,15 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: ✅ Verify Docker Secrets
+      - name: Verify Docker Secrets
         run: |
           if [ -z "${{ secrets.DOCKER_USERNAME }}" ]; then
             echo "❌ ERROR: DOCKER_USERNAME secret is not set!"
+            echo "Go to: Repo → Settings → Secrets → Actions → New repository secret"
+            exit 1
+          fi
+          if [ -z "${{ secrets.DOCKER_PASSWORD }}" ]; then
+            echo "❌ ERROR: DOCKER_PASSWORD secret is not set!"
             exit 1
           fi
           echo "✅ Docker secrets verified: ${{ secrets.DOCKER_USERNAME }}"
@@ -143,7 +150,7 @@ jobs:
           file: ./Ui/Dockerfile
           push: true
           tags: |
-            ${{ secrets.DOCKER_USERNAME }}/stroke-streamlit:latest
-            ${{ secrets.DOCKER_USERNAME }}/stroke-streamlit:${{ github.sha }}
+            ${{ secrets.DOCKER_USERNAME != '' && secrets.DOCKER_USERNAME || github.repository_owner }}/stroke-streamlit:latest
+            ${{ secrets.DOCKER_USERNAME != '' && secrets.DOCKER_USERNAME || github.repository_owner }}/stroke-streamlit:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
