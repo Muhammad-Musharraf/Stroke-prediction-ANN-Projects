@@ -34,8 +34,7 @@ def load_model():
         "Model",                                     # relative to current working dir
     ]
 
-    model_path = None
-    trans_path = None
+
     for d in candidate_dirs:
         m = os.path.join(d, "stroke_prediction.keras")
         t = os.path.join(d, "column_trans.pkl")
