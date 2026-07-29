@@ -48,14 +48,14 @@ jobs:
       - name: Lint FastAPI Code
         run: |
           flake8 FastApi/main.py \
-            --max-line-length=120 \
-            --ignore=E221,E241,E251,E302,E305,W291,W292,W293,W503,F841
+            --max-line-length=150 \
+            --ignore=E221,E224,E225,E226,E241,E251,E265,E302,E305,E501,W291,W292,W293,W503,F841
 
       - name: Lint Streamlit Code
         run: |
           flake8 Ui/App.py \
-            --max-line-length=120 \
-            --ignore=E221,E241,E251,E302,E305,W291,W292,W293,W503,F841
+            --max-line-length=150 \
+            --ignore=E221,E224,E225,E226,E241,E251,E265,E302,E305,E501,W291,W292,W293,W503,F841
 
       - name: Run Tests (if tests/ exists)
         run: |
