@@ -3,7 +3,7 @@ from pydantic import BaseModel, Field
 from fastapi.middleware.cors import CORSMiddleware
 from typing import Literal, Annotated
 import tensorflow as tf
-import joblib                   # ✅ NEW — to load saved pipeline
+import joblib                   
 import os
 import sentry_sdk
 import dotenv
@@ -90,13 +90,13 @@ def predict(user: UserInput):
             "gender":            user.gender,
             "age":               user.age,
             "hypertension":      user.hypertension,
-            "heart disease":     user.heart_disease,    # ✅ space  (was: heart_disease)
-            "Married":           user.Married,           # ✅ capital (was: ever_married)
-            "Work Type":         user.Work_Type,         # ✅ space  (was: work_type)
+            "heart disease":     user.heart_disease,    
+            "Married":           user.Married,           
+            "Work Type":         user.Work_Type,         
             "Residence_type":    user.Residence_type,
-            "Avg_Glucose_Level": user.Avg_Glucose_Level, # ✅ capital (was: avg_glucose_level)
+            "Avg_Glucose_Level": user.Avg_Glucose_Level, 
             "bmi":               user.bmi,
-            "Smoking Status":    user.Smoking_Status,    # ✅ space  (was: smoking_status)
+            "Smoking Status":    user.Smoking_Status,    
         }])
 
         # FIX 2 — Use the saved pipeline instead of pd.get_dummies()
@@ -116,11 +116,10 @@ def predict(user: UserInput):
             stroke_probability = round(stroke_prob, 6),
             timestamp          = datetime.now().isoformat(),
         )
-
     except Exception as exc:
         log.exception("Prediction failed")
         raise HTTPException(status_code=500, detail=str(exc))
-
+    
 # ── Entry point ───────────────────────────────────────────────────────────────
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
