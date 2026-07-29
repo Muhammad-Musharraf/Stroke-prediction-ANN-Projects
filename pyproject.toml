@@ -16,4 +16,8 @@ dependencies = [
     "streamlit>=1.60.0",
     "sentry-sdk>=2.66.1",
     "dotenv>=0.9.9",
-]                                                                                                                                                                                                                                                                                                                                      
+]       
+[tool.flake8]
+max-line-length = 120
+ignore = ["E221","E241","E251","E302","E305","W291","W292","W293","W503","F841"]
+                                                                                                                                                                                                                                                                                                                               

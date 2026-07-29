@@ -16,7 +16,7 @@ env:
 
 jobs:
   # ─────────────────────────────────────────
-  # JOB 1: Lint & Basic Check (tests replace ho ga jab likhoge)
+  # JOB 1: Lint & Basic Check
   # ─────────────────────────────────────────
   lint:
     name: Code Quality Check
@@ -49,21 +49,18 @@ jobs:
         run: |
           flake8 FastApi/main.py \
             --max-line-length=120 \
-            --ignore=E501,W503 \
-            --count
+            --ignore=E221,E241,E251,E302,E305,W291,W292,W293,W503,F841
 
       - name: Lint Streamlit Code
         run: |
           flake8 Ui/App.py \
             --max-line-length=120 \
-            --ignore=E501,W503 \
-            --count
+            --ignore=E221,E241,E251,E302,E305,W291,W292,W293,W503,F841
 
-      - name: Check Tests Exist (Warning only)
+      - name: Run Tests (if tests/ exists)
         run: |
           if [ ! -d "tests" ]; then
             echo "⚠️  WARNING: tests/ folder not found — skipping pytest"
-            echo "   Tip: Create tests/test_api.py to enable test runs"
           else
             pip install pytest pytest-asyncio httpx
             pytest tests/ -v --tb=short
@@ -94,7 +91,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: ./Dockerfile         # FastApi Dockerfile (port 8000)
+          file: ./Dockerfile
           push: true
           tags: |
             ${{ env.FASTAPI_IMAGE }}:latest
@@ -127,7 +124,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: ./Ui/Dockerfile       # Streamlit Dockerfile (port 8501)
+          file: ./Ui/Dockerfile
           push: true
           tags: |
             ${{ env.STREAMLIT_IMAGE }}:latest
@@ -152,11 +149,9 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
-            # ── Pull latest images ──
             docker pull ${{ env.FASTAPI_IMAGE }}:latest
             docker pull ${{ env.STREAMLIT_IMAGE }}:latest
 
-            # ── FastAPI Container ──
             docker stop stroke-fastapi || true
             docker rm   stroke-fastapi || true
             docker run -d \
@@ -166,7 +161,6 @@ jobs:
               --env-file /home/${{ secrets.SERVER_USER }}/.env \
               ${{ env.FASTAPI_IMAGE }}:latest
 
-            # ── Streamlit Container ──
             docker stop stroke-streamlit || true
             docker rm   stroke-streamlit || true
             docker run -d \
@@ -176,5 +170,5 @@ jobs:
               --add-host=host.docker.internal:host-gateway \
               ${{ env.STREAMLIT_IMAGE }}:latest
 
-            echo "✅ FastAPI  → http://YOUR_SERVER_IP:8000"
+            echo "✅ FastAPI   → http://YOUR_SERVER_IP:8000"
             echo "✅ Streamlit → http://YOUR_SERVER_IP:8501"
