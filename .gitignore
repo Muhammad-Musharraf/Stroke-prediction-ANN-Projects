@@ -1,0 +1,7 @@
+.env
+# Ignore a folder
+Model/
+__pycache__/
+.venv/
+Dataset/
+

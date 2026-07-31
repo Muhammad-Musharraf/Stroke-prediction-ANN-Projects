@@ -5,24 +5,16 @@ description = "Stroke Prediction API"
 requires-python = ">=3.12"
 
 dependencies = [
-    "fastapi",
+    "fastapi[standard]",
     "uvicorn",
     "scikit-learn==1.6.1",
     "pandas",
     "numpy",
     "joblib",
     "tensorflow==2.20.0",
-    "plotly>=6.9.0",
-    "streamlit>=1.60.0",
     "sentry-sdk>=2.66.1",
-    "dotenv>=0.9.9",
-    "keras==3.13.2",
-]       
-[tool.flake8]
-max-line-length = 120
-ignore = ["E221","E241","E251","E302","E305","W291","W292","W293","W503","F841"]
-
-[tool.uv.workspace]
-members = [
-    "FastApi",
-]                                                                                                                                                                                                                                                                                                                      
+    "python-dotenv",
+    "streamlit>=1.60.0",
+    "requests",
+    "plotly>=6.9.0",
+]
